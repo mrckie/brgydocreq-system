@@ -1,13 +1,13 @@
 import { UserInfo } from '@/components/custom/UserInfo';
 import { DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
 import { useMobileNavigation } from '@/hooks/use-mobile-navigation';
-import { User, type Admin } from '@/types';
+import { UserForm, type Admin } from '@/types';
 import { Link } from '@inertiajs/react';
 import { LogOut, Settings } from 'lucide-react';
 
 interface CustomMenuContentProps {
     admin?: Admin;
-    user?: User;
+    user?: UserForm;
 }
 
 export function CustomMenuContent({ user, admin }: CustomMenuContentProps) {
@@ -19,7 +19,7 @@ export function CustomMenuContent({ user, admin }: CustomMenuContentProps) {
                 <DropdownMenuGroup className="p-0 font-normal">
                     <DropdownMenuItem asChild>
                         <Link href={route('admin.dashboard')} as='button' prefetch onClick={cleanup} className="flex items-center gap-2 px-1 py-1.5 text-left text-sm w-full cursor-pointer">
-                            <UserInfo admin={admin} showEmail={true} />
+                            <UserInfo admin={admin} />
                         </Link>
                     </DropdownMenuItem>
                 </DropdownMenuGroup>
@@ -46,7 +46,7 @@ export function CustomMenuContent({ user, admin }: CustomMenuContentProps) {
                 <DropdownMenuGroup className="p-0 font-normal">
                     <DropdownMenuItem asChild>
                         <Link href={route('user.settings.profile.edit')} as='button' prefetch onClick={cleanup} className="flex items-center gap-2 px-1 py-1.5 text-left text-sm w-full cursor-pointer">
-                            <UserInfo user={user} showEmail={true} />
+                            <UserInfo user={user} />
                         </Link>
                     </DropdownMenuItem>
                 </DropdownMenuGroup>

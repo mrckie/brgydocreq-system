@@ -2,7 +2,7 @@ import { LucideIcon } from 'lucide-react';
 import type { Config } from 'ziggy-js';
 
 export interface Auth {
-    user: User;
+    user: UserForm;
     admin: Admin;
 }
 
@@ -28,19 +28,28 @@ export interface SharedData {
     admins: AdminFetch[];
     residents: ResidentFetch[];
     roles: Role[];
+    documents: Document[];
     puroks: Purok[];
     status: Status[];
     ziggy: Config & { location: string };
     [key: string]: unknown;
 }
 
-export interface User {
-    user_id: string;
+export interface UserForm {
+    user_id: number;
     username: string;
     user_email: string;
-    user_photopath?: string;
-    user_firstname: string;
-    [key: string]: unknown; // This allows for additional properties...
+    user_phonenum: string;
+    user_photopath: string;
+    resident_firstname: string;
+    resident_middlename: string;
+    resident_lastname: string;
+    resident_suffix: string | null;
+    resident_birthdate: string;
+    resident_gender: string;
+    resident_precinct: string;
+    resident_householdnum: string;
+    resident_purok: string;
 }
 export interface Admin {
     admin_id: string;
@@ -62,8 +71,17 @@ export interface Purok {
 }
 
 export interface Status {
-    status_id: number,
+    status_id: number;
     status_name: string;
+}
+
+export interface Document {
+    document_id: number;
+    status_id: number | null;
+    document_name: string;
+    description: string;
+    price: string;
+    document_photopath: string | null;
 }
 
 export interface AdminFetch {

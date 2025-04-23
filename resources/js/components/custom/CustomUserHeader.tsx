@@ -132,7 +132,7 @@ export function CustomUserHeader({ breadcrumbs = [], mainNavItems = [], rightNav
                                             </Avatar>
                                             <div className="flex flex-col items-start gap-1 text-sm">
                                                 {auth.user.username}
-                                                <span className="text-xs">{auth.user.user_firstname}</span>
+                                                <span className="text-xs">{`${auth.user.resident_lastname}, ${auth.user.resident_firstname}`}</span>
                                             </div>
                                             <ChevronDown className="h-4 w-4" />
                                         </Button>

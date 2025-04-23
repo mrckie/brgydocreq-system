@@ -1,7 +1,6 @@
 import CustomDialog from '@/components/custom/CustomDialog';
 import { Button } from '@/components/ui/button';
 import AdminLayout from '@/layouts/admin/AdminLayout';
-import Reignear from '../../../assets/reignear.png';
 import { Input } from '@/components/ui/input';
 import { useForm, usePage } from '@inertiajs/react';
 import { FormEventHandler, useEffect, useState } from 'react';
@@ -10,8 +9,9 @@ import InputError from '@/components/custom/InputError';
 import { AdminFetch, InviteForm, SharedData } from '@/types';
 import { AdminCustomCard } from '@/components/custom/CustomCard';
 import CustomSelect from '@/components/custom/CustomSelect';
-import { AccountInfo, BarangayOfficerInfo } from '@/data/admin/FetchAdminsFields';
+import { AccountInfo, BarangayOfficerInfo } from '@/data/admin/FetchUpdateAdminsFields';
 import CustomForm from '@/components/custom/CustomFormFields';
+import DefaultProfilePic from '../../../assets/default_profilepic.svg'
 
 
 const Admins = () => {
@@ -22,7 +22,7 @@ const Admins = () => {
         role_id: null,
     });
 
-    const { data: dataAdmin, setData: setDataAdmin, put: putAdmin, processing: processingAdmin, errors: errorsAdmin } = useForm<Required<AdminFetch>>({
+    const { data: dataAdmin, setData: setDataAdmin, patch: patchAdmin, processing: processingAdmin, errors: errorsAdmin } = useForm<Required<AdminFetch>>({
         admin_id: 0,
         admin_username: '',
         admin_email: '',
@@ -75,7 +75,7 @@ const Admins = () => {
 
     const updateSubmit: FormEventHandler = (e) => {
         e.preventDefault();
-        putAdmin(route('admin.admins.update', dataAdmin.admin_id), {
+        patchAdmin(route('admin.admins.update', dataAdmin.admin_id), {
             onError: (errors) => {
                 console.error('Form submission failed. Validation errors:');
                 Object.entries(errors).forEach(([field, message]) => {
@@ -126,7 +126,9 @@ const Admins = () => {
                         title='Administrator Profile'
                         button={<Button type='submit' disabled={processingAdmin} variant="primary">	{processingAdmin && <LoaderCircleIcon className="h-4 w-4 animate-spin" />} Save</Button>}
                         trigger={
-                            <AdminCustomCard image={Reignear}
+                            <AdminCustomCard
+                                image={admin.admin_photopath ?? DefaultProfilePic}
+                                Imagesize='1'
                                 title={`Hon. ${admin.officer_firstname} ${admin.officer_middlename} ${admin.officer_lastname} ${admin.officer_suffix || ''}`}
                                 description={admin.officer_position}
                                 content={admin.admin_role}

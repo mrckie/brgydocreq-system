@@ -50,7 +50,7 @@ class AdminAdminsController extends Controller
 
     public function updateAdminInfo(Request $request)
     {
-        $validated = $request->validate([
+        $validate = $request->validate([
             'admin_id' => 'required|exists:admins,admin_id',
             'admin_username' => 'required|string|max:255',
             'admin_email' => 'required|email|max:255',
@@ -68,33 +68,33 @@ class AdminAdminsController extends Controller
             'officer_purok' => 'required|string|max:255',
         ]);
 
-        $admin = Admin::findOrFail($validated['admin_id']);
+        $admin = Admin::findOrFail($validate['admin_id']);
 
         $admin->update([
-            'admin_username' => $validated['admin_username'],
-            'admin_email' => $validated['admin_email'],
-            'admin_photopath' => $validated['admin_photopath'],
-            'admin_role' => $validated['admin_role'],
+            'admin_username' => $validate['admin_username'],
+            'admin_email' => $validate['admin_email'],
+            'admin_photopath' => $validate['admin_photopath'],
+            'admin_role' => $validate['admin_role'],
         ]);
 
         $admin->barangayOfficer->update([
-            'officer_firstname' => $validated['officer_firstname'],
-            'officer_middlename' => $validated['officer_middlename'],
-            'officer_lastname' => $validated['officer_lastname'],
-            'officer_suffix' => $validated['officer_suffix'],
-            'officer_birthdate' => $validated['officer_birthdate'],
-            'officer_precinct' => $validated['officer_precinct'],
-            'officer_householdnum' => $validated['officer_householdnum'],
-            'officer_position' => $validated['officer_position'],
-            'officer_gender' => $validated['officer_gender'],
+            'officer_firstname' => $validate['officer_firstname'],
+            'officer_middlename' => $validate['officer_middlename'],
+            'officer_lastname' => $validate['officer_lastname'],
+            'officer_suffix' => $validate['officer_suffix'],
+            'officer_birthdate' => $validate['officer_birthdate'],
+            'officer_precinct' => $validate['officer_precinct'],
+            'officer_householdnum' => $validate['officer_householdnum'],
+            'officer_position' => $validate['officer_position'],
+            'officer_gender' => $validate['officer_gender'],
         ]);
 
         $admin->barangayOfficer->address->update([
-            'purok' => $validated['officer_purok'],
+            'purok' => $validate['officer_purok'],
         ]);
 
         $admin->role->update([
-            'role_name' => $validated['admin_role']
+            'role_name' => $validate['admin_role']
         ]);
 
 

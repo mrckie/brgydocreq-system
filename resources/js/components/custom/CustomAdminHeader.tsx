@@ -33,7 +33,7 @@ export function CustomAdminHeader({ breadcrumbs = [], mainNavItems = [], rightNa
 
 	return (
 		<>
-			<div {...headerProps} className={`${className} ${headerProps.className} border`}>
+			<div {...headerProps} className={`${className} ${headerProps.className} bg-white border`}>
 				{/* Mobile Menu */}
 				<div className="lg:hidden">
 					<Sheet>

@@ -8,7 +8,7 @@ import { useForm, usePage } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
 import { ArrowUpDown, LoaderCircle, PlusCircle } from 'lucide-react';
 import { getStatusColors } from '@/lib/utils';
-import { FetchResidentsFields } from '@/data/admin/FetchResidentsFields';
+import { FetchUpdateResidentsFields } from '@/data/admin/FetchUpdateResidentsFields';
 import { AddResidentsFields } from '@/data/admin/AddResidentsFields';
 import { FormEventHandler } from 'react';
 import CustomDialog from '@/components/custom/CustomDialog';
@@ -34,7 +34,8 @@ const Residents = () => {
         resident_birthdate: resident.resident_birthdate
     }));
 
-    const { data, setData, put, processing, errors } = useForm<Required<ResidentFetch>>({
+    // update and fetch residents 
+    const { data: updateData, setData: updateSetData, patch: updatePatch, processing: updateProcessing, errors: updateErrors } = useForm<Required<ResidentFetch>>({
         resident_id: 0,
         resident_purokid: null,
         resident_statusid: null,
@@ -50,6 +51,39 @@ const Residents = () => {
         resident_purok: '',
     });
 
+
+    const updateSubmit: FormEventHandler = (e) => {
+        e.preventDefault();
+        updatePatch(route('admin.residents.update', updateData.resident_id), {
+            onError: (errors) => {
+                console.error('Form submission failed. Validation errors:');
+                Object.entries(errors).forEach(([field, message]) => {
+                    console.error(`Field: ${field}, Error: ${message}`);
+                });
+            },
+        })
+    }
+
+
+    const populateSheet = (resident: ResidentFetch) => {
+        updateSetData({
+            resident_id: resident.resident_id,
+            resident_purokid: resident.resident_purokid,
+            resident_statusid: resident.resident_statusid,
+            resident_firstname: resident.resident_firstname,
+            resident_middlename: resident.resident_middlename,
+            resident_lastname: resident.resident_lastname,
+            resident_suffix: resident.resident_suffix,
+            resident_birthdate: resident.resident_birthdate,
+            resident_gender: resident.resident_gender,
+            resident_precinct: resident.resident_precinct,
+            resident_householdnum: resident.resident_householdnum,
+            resident_status: resident.resident_status,
+            resident_purok: resident.resident_purok,
+        });
+    }
+
+    // add resdients
     const { data: addData, setData: addSetData, post: addPost, processing: addProcessing, errors: addErrors } = useForm<Omit<ResidentFetch, 'resident_id'>>({
         resident_firstname: '',
         resident_middlename: '',
@@ -75,38 +109,6 @@ const Residents = () => {
                 });
             },
         })
-    }
-
-
-    const updateSubmit: FormEventHandler = (e) => {
-        e.preventDefault();
-        put(route('admin.residents.update', data.resident_id), {
-            onError: (errors) => {
-                console.error('Form submission failed. Validation errors:');
-                Object.entries(errors).forEach(([field, message]) => {
-                    console.error(`Field: ${field}, Error: ${message}`);
-                });
-            },
-        })
-    }
-
-
-    const populateSheet = (resident: ResidentFetch) => {
-        setData({
-            resident_id: resident.resident_id,
-            resident_purokid: resident.resident_purokid,
-            resident_statusid: resident.resident_statusid,
-            resident_firstname: resident.resident_firstname,
-            resident_middlename: resident.resident_middlename,
-            resident_lastname: resident.resident_lastname,
-            resident_suffix: resident.resident_suffix,
-            resident_birthdate: resident.resident_birthdate,
-            resident_gender: resident.resident_gender,
-            resident_precinct: resident.resident_precinct,
-            resident_householdnum: resident.resident_householdnum,
-            resident_status: resident.resident_status,
-            resident_purok: resident.resident_purok,
-        });
     }
 
     const columns: ColumnDef<ResidentFetch>[] = [
@@ -194,7 +196,6 @@ const Residents = () => {
         <AdminLayout>
             <div className="h-full w-full p-2 pt-5">
                 <div className="flex flex-col items-center justify-between pr-2">
-
                     <CustomDataTable
                         onRowClick={(row: ResidentFetch) => populateSheet(row)}
                         columns={columns}
@@ -226,15 +227,15 @@ const Residents = () => {
                                 key={row}
                                 trigger={trigger}
                                 firstButton={
-                                    <Button disabled={processing} className='text-center w-full'>
-                                        {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
+                                    <Button disabled={updateProcessing} className='text-center w-full'>
+                                        {updateProcessing && <LoaderCircle className="h-4 w-4 animate-spin" />}
                                         Save
                                     </Button>}
-                                statusTitle={data.resident_status}
+                                statusTitle={updateData.resident_status}
                                 form={
                                     <>
-                                        <input type="text" hidden defaultValue={data.resident_id} />
-                                        <CustomForm fields={FetchResidentsFields(data, setData, errors)} className="grid grid-cols-2 gap-2" />
+                                        <input type="text" hidden defaultValue={updateData.resident_id} />
+                                        <CustomForm fields={FetchUpdateResidentsFields(updateData, updateSetData, updateErrors)} className="grid grid-cols-2 gap-2" />
                                     </>
                                 } />
                         )}

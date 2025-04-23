@@ -57,7 +57,7 @@ class UserRegistrationController extends Controller
 
         Auth::login($user);
 
-        return to_route(route('admin.dashboard'));
+        return to_route(route('user.landing.home'));
 
         $residentReference->update(['used' => true]);
     }

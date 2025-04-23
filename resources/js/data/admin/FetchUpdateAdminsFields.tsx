@@ -1,8 +1,10 @@
 import { createDateSetter, createStringSetter } from "@/lib/utils";
-import { CustomFormField, AdminFetch } from "@/types";
+import { CustomFormField, AdminFetch, SharedData } from "@/types";
+import { usePage } from "@inertiajs/react";
 
-export const AccountInfo = (data: AdminFetch, setData: (key: keyof AdminFetch, value: string | Date | null) => void, errors: Partial<Record<keyof AdminFetch, string>>): CustomFormField[] => {
+export const AccountInfo = (data: AdminFetch, setData: (key: keyof AdminFetch, value: string | Date | number | null) => void, errors: Partial<Record<keyof AdminFetch, string>>): CustomFormField[] => {
 	const stringSetter = createStringSetter(setData);
+	const {roles} = usePage<SharedData>().props
 
 	return [
 		{
@@ -24,9 +26,10 @@ export const AccountInfo = (data: AdminFetch, setData: (key: keyof AdminFetch, v
 			tabIndex: -2,
 			onChange: stringSetter('admin_role'),
 			errorMessage: errors.admin_role,
-			selectItems: [
-				{ label: data.admin_role, value: data.admin_role },
-			],
+			selectItems: roles.map((role) => ({
+				label: role.role_name,
+				value: role.role_id
+			}))
 		},
 
 		{
@@ -42,7 +45,7 @@ export const AccountInfo = (data: AdminFetch, setData: (key: keyof AdminFetch, v
 	]
 }
 
-export const BarangayOfficerInfo = (data: AdminFetch, setData: (key: keyof AdminFetch, value: string | Date | null) => void, errors: Partial<Record<keyof AdminFetch, string>>): CustomFormField[] => {
+export const BarangayOfficerInfo = (data: AdminFetch, setData: (key: keyof AdminFetch, value: string | Date | number | null) => void, errors: Partial<Record<keyof AdminFetch, string>>): CustomFormField[] => {
 	const stringSetter = createStringSetter(setData);
 	const dateSetter = createDateSetter(setData);
 

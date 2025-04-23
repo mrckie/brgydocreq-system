@@ -27,7 +27,7 @@ export function CustomSidebar({ navItems, navTitle, ...props }: CustomSidebarPro
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>
-                        <div className="flex w-full flex-col py-2 items-center justify-center">
+                        <div className="flex w-full flex-col items-center justify-center">
                             {navTitle}
                         </div>
                     </SidebarMenuItem>

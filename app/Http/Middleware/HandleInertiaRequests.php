@@ -57,8 +57,18 @@ class HandleInertiaRequests extends Middleware
                     'user_id' => $user->user_id,
                     'username' => $user->username,
                     'user_email' => $user->user_email,
-                    'user_firstname' => $user->resident->resident_firstname,
-                    'user_photopath' => $user->user_photopath
+                    'user_phonenum' => $user->user_phonenum,
+                    'user_photopath' => $user->user_photopath,
+                    'resident_firstname' => $user->resident->resident_firstname,
+                    'resident_middlename' => $user->resident->resident_middlename,
+                    'resident_lastname' => $user->resident->resident_lastname,
+                    'resident_suffix' => $user->resident->resident_suffix,
+                    'resident_birthdate' => $user->resident->resident_birthdate,
+                    'resident_gender' => $user->resident->resident_gender,
+                    'resident_precinct' => $user->resident->resident_precinct,
+                    'resident_householdnum' => $user->resident->resident_householdnum,
+                    'resident_purok' => $user->resident->address->purok,
+
                 ] : null,
                 'admin' => $admin ? [
                     'admin_id' => $admin->admin_id,

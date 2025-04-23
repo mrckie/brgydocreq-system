@@ -60,4 +60,6 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Resident::class, 'resident_id', 'resident_id');
     }
+
+    
 }

@@ -13,18 +13,20 @@ interface CustomCardProps {
     increasePercentage?: string;
     decreasePercentage?: string;
     icon?: React.ReactNode;
+    className?: string;
+    Imagesize?: string;
 }
-    
-export const DocumentCustomCard = ({ image, title, content, alt, onClick, description, }: CustomCardProps) => {
+
+export const DocumentCustomCard = ({ image, title, content, alt, onClick, description, className, Imagesize }: CustomCardProps) => {
     return (
         <>
             <button
-                className="relative h-68 w-90 cursor-pointer duration-300 ease-in-out hover:-translate-y-2 hover:scale-104 hover:shadow-lg"
+                className={`relative h-68 w-90 cursor-pointer duration-300 ease-in-out hover:-translate-y-2 hover:scale-104 hover:shadow-lg ${className}`}
                 onClick={onClick}
                 type='button'
                 aria-label={title}
             >
-                <CustomIcon imgSrc={image} alt={alt} className="h-full w-full rounded-md border border-gray-300 object-cover" />
+                <CustomIcon imgSrc={image} alt={alt} sizes={Imagesize} className="h-full w-full rounded-md border border-gray-300 object-cover" />
                 <Card className="absolute bottom-0 gap-2 rounded-b-md border border-gray-300 py-3 w-full">
                     <CardHeader className="px-4">
                         <CardTitle className="text-s3 text-center text-xl font-semibold">{title}</CardTitle>
@@ -67,7 +69,7 @@ export const CustomDisplayCard = ({ title, description, statistics, increasePerc
 }
 
 
-export const AdminCustomCard = ({ image, title, content, alt, onClick, description }: CustomCardProps) => {
+export const AdminCustomCard = ({ image, title, content, alt, onClick, description, Imagesize }: CustomCardProps) => {
     return (
         <>
             <button
@@ -76,7 +78,7 @@ export const AdminCustomCard = ({ image, title, content, alt, onClick, descripti
                 type='button'
                 aria-label={title}
             >
-                <CustomIcon imgSrc={image} alt={alt} className="h-full w-full rounded-t-md border border-gray-300 object-cover" />
+                <CustomIcon imgSrc={image} alt={alt} className="h-full w-full rounded-t-md border border-gray-300 object-contain " />
                 <Card className="gap-2 rounded-b-md border border-gray-300 w-full pt-4">
                     <CardHeader>
                         <CardTitle className="text-s3 text-center text-lg font-semibold">{title}</CardTitle>

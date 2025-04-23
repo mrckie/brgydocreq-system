@@ -27,7 +27,7 @@ class AdminProfileController extends Controller
     /**
      * Update the user's profile settings.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function update(Request $request): RedirectResponse
     {
         $request->user()->fill($request->validated());
 

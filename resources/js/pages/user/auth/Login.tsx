@@ -89,7 +89,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                             </div>
 
                             <div className="flex items-center">
-                                {
+                                {canResetPassword &&
                                     <TextLink href={route('user.forgot-password')} className="text-sm" tabIndex={4}>
                                         Forgot password?
                                     </TextLink>
@@ -115,6 +115,6 @@ export default function Login({ status, canResetPassword }: LoginProps) {
             </form>
 
             {status && <div className="mb-4 text-center text-sm font-medium text-green-600">{status}</div>}
-        </AuthSplitLayout>
+        </AuthSplitLayout >
     );
 }

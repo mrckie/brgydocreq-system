@@ -1,114 +1,71 @@
-import { type BreadcrumbItem, type SharedData } from '@/types';
-import { Transition } from '@headlessui/react';
-import { Head, Link, useForm, usePage } from '@inertiajs/react';
+import { UserForm, type SharedData } from '@/types';
+import { Head, useForm, usePage } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
-
 import DeleteUser from '@/components/custom/delete-user';
-import InputError from '@/components/custom/InputError';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { AccountInfo } from '@/data/user/FetchUpdateProfileFields';
+import { ResidentInfo } from '@/data/user/FetchUpdateProfileFields';
 import UserSettingsLayout from '@/layouts/user/UserSettingsLayout';
+import CustomForm from '@/components/custom/CustomFormFields';
+import { Button } from '@/components/ui/button';
+import { NotebookPenIcon } from 'lucide-react';
 
 
-interface ProfileForm {
-    name: string;
-    email: string;
-}
+
 
 export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: boolean; status?: string }) {
     const { auth } = usePage<SharedData>().props;
 
-    const { data, setData, patch, errors, processing, recentlySuccessful } = useForm<Required<ProfileForm>>({
-        name: auth.user.resident_firstname,
-        email: auth.user.username,
+    const { data, setData, patch, errors, processing, recentlySuccessful } = useForm<Required<UserForm>>({
+        user_id: auth.user.user_id,
+        username: auth.user.username,
+        user_email: auth.user.user_email,
+        user_phonenum: auth.user.user_phonenum,
+        user_photopath: auth.user.user_photopath,
+        resident_firstname: auth.user.resident_firstname,
+        resident_middlename: auth.user.resident_middlename,
+        resident_lastname: auth.user.resident_lastname,
+        resident_suffix: auth.user.resident_suffix,
+        resident_birthdate: auth.user.resident_birthdate,
+        resident_gender: auth.user.resident_gender,
+        resident_precinct: auth.user.resident_precinct,
+        resident_householdnum: auth.user.resident_householdnum,
+        resident_purok: auth.user.resident_purok,
     });
+
+    console.log(data)
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-
-        patch(route('profile.update'), {
+        patch(route('user.settings.profile.update'), {
             preserveScroll: true,
+            onError: (errors) => {
+                console.error('Form submission failed. Validation errors:');
+                Object.entries(errors).forEach(([field, message]) => {
+                    console.error(`Field: ${field}, Error: ${message}`);
+                });
+            },
         });
     };
 
     return (
         <>
             <Head title="Profile settings" />
-            <UserSettingsLayout title="Profile information">
-                <div className="space-y-6">
-                    <form onSubmit={submit} className="space-y-6">
-                        <div className="grid max-w-sm gap-2">
-                            <Label htmlFor="name">Name</Label>
-
-                            <Input
-                                id="name"
-                                className="mt-1 block w-full"
-                                value={data.name}
-                                onChange={(e) => setData('name', e.target.value)}
-                                required
-                                autoComplete="name"
-                                placeholder="Full name"
-                            />
-
-                            <InputError className="mt-2" message={errors.name} />
-                        </div>
-
-                        <div className="grid max-w-sm gap-2">
-                            <Label htmlFor="email">Email address</Label>
-
-                            <Input
-                                id="email"
-                                type="email"
-                                className="mt-1 block w-full"
-                                value={data.email}
-                                onChange={(e) => setData('email', e.target.value)}
-                                required
-                                autoComplete="username"
-                                placeholder="Email address"
-                            />
-
-                            <InputError className="mt-2" message={errors.email} />
-                        </div>
-
-                        {mustVerifyEmail && auth.user.email_verified_at === null && (
-                            <div>
-                                <p className="text-muted-foreground -mt-4 text-sm">
-                                    Your email address is unverified.{' '}
-                                    <Link
-                                        href={route('verification.send')}
-                                        method="post"
-                                        as="button"
-                                        className="text-foreground underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current! dark:decoration-neutral-500"
-                                    >
-                                        Click here to resend the verification email.
-                                    </Link>
-                                </p>
-
-                                {status === 'verification-link-sent' && (
-                                    <div className="mt-2 text-sm font-medium text-green-600">
-                                        A new verification link has been sent to your email address.
-                                    </div>
-                                )}
-                            </div>
-                        )}
-
-                        <div className="flex items-center gap-4">
-                            <Button disabled={processing}>Save</Button>
-
-                            <Transition
-                                show={recentlySuccessful}
-                                enter="transition ease-in-out"
-                                enterFrom="opacity-0"
-                                leave="transition ease-in-out"
-                                leaveTo="opacity-0"
-                            >
-                                <p className="text-sm text-neutral-600">Saved</p>
-                            </Transition>
-                        </div>
-                    </form>
+            <UserSettingsLayout title='Profile information'>
+                <form onSubmit={submit} className='space-y-5'>
+                    <CustomForm className='grid grid-cols-3 gap-x-5' fields={AccountInfo(data, setData, errors)} />
+                    <div className='flex justify-end'>
+                        <Button className='w-1/8' disabled={processing}>Save</Button>
+                    </div>
+                </form>
+                <div className='bg-amber-300 p-4 rounded-md'>
+                    <article className='flex text-justify '>
+                        <span>
+                            <NotebookPenIcon size={25} className='mr-2 mt-1' />
+                        </span>
+                        Your personal details below are based on official records provided by the Barangay and is managed by authorized personnel. For consistency and accuracy, this information cannot be edited by users.  If you need to make corrections or updates, please visit or contact the Barangay office directly. All updates will be reflected in the system once confirmed by the Barangay.
+                    </article>
                 </div>
-
+                <CustomForm className='grid grid-cols-3 gap-x-5' fields={ResidentInfo(data, setData, errors)} />
                 <DeleteUser />
             </UserSettingsLayout>
         </>

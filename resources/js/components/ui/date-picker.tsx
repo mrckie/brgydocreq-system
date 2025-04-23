@@ -25,9 +25,11 @@ interface DatePickerProps {
   onChange?: (date: Date | null) => void
   tabIndex?: number
   id?: string
+  disabled?: boolean
+  className?: string
 }
 
-export function DatePicker({ value, onChange, tabIndex, id }: DatePickerProps) {
+export function DatePicker({ value, onChange, tabIndex, id, disabled, className }: DatePickerProps) {
   const date = value
 
   const months = [
@@ -51,9 +53,10 @@ export function DatePicker({ value, onChange, tabIndex, id }: DatePickerProps) {
       <PopoverTrigger asChild>
         <Button
           variant="outline"
+          disabled={disabled}
           className={cn(
             "w-full justify-start text-left font-normal rounded-md",
-            !date && "text-muted-foreground"
+            !date && "text-muted-foreground", className
           )}
           tabIndex={tabIndex}
         >

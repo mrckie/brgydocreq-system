@@ -35,6 +35,10 @@ const CustomForm = ({ fields, className, title }: CustomFormProps) => {
                         id={field.id}
                         tabIndex={field.tabIndex}
                         value={field.value ? new Date(field.value) : null}
+                        disabled={field.disabled}
+                        className={`
+                            disabled:text-black disabled:border-shamrock-green`}
+                        {...field.additionalProps}
                         onChange={(date) => field.onChange?.(date)}
                         {...field.additionalProps}
 

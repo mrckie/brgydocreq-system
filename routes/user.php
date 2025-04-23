@@ -29,17 +29,16 @@ Route::prefix('user')->name('user.')->group(function () {
 
 		Route::get('/forgot-password', [UserPasswordResetLinkController::class, 'create'])->name('forgot-password');
 
-		Route::post('forgot-password', [UserPasswordResetLinkController::class, 'store'])->name('password.email');
+		Route::post('/forgot-password', [UserPasswordResetLinkController::class, 'store'])->name('password.email');
 
-		Route::get('reset-password/{token}', [UserNewPasswordController::class, 'create'])->name('password.reset');
+		Route::get('/reset-password/{token}', [UserNewPasswordController::class, 'create'])->name('password.reset');
 
-		Route::post('reset-password', [UserNewPasswordController::class, 'store'])->name('password.store');
+		Route::post('/reset-password', [UserNewPasswordController::class, 'store'])->name('password.store');
 	});
 
 	Route::middleware('auth:web')->group(function () {
 
 		Route::inertia('/', 'landing/Welcome')->name('landing.home');
-		Route::inertia('/#about-us', 'landing/about')->name('landing.about-us');
 		Route::inertia('/about-us', 'landing/AboutUs')->name('landing.about-us');
 		Route::inertia('/contact-us', 'landing/ContactUs')->name('landing.contact-us');
 
