@@ -1,10 +1,10 @@
-import approved from '../../../assets/approved.svg';
-import rejected from '../../../assets/rejected.svg';
-import cancelled from '../../../assets/cancelled.svg';
-import underReview from '../../../assets/under-review.svg';
-import claimed from '../../../assets/claimed.svg';
-import processing from '../../../assets/processing.svg';
-import forPickUp from '../../../assets/for-pickup.svg';
+import approved from '../../../assets/notif-approved.svg';
+import cancelled from '../../../assets/notif-cancelled.svg';
+import claimed from '../../../assets/notif-claimed.svg';
+import forPickUp from '../../../assets/notif-for-pickup.svg';
+import processing from '../../../assets/notif-processing.svg';
+import rejected from '../../../assets/notif-rejected.svg';
+import underReview from '../../../assets/notif-under-review.svg';
 
 interface CustomNotificationsProps {
     Icon?: string;
@@ -25,9 +25,9 @@ const notificationColors: Record<string, { bgFirstColor: string; bgColor: string
 };
 
 const CustomNotifications = ({ Icon, title, description, time, type = 'approved' }: CustomNotificationsProps) => {
-    const {bgFirstColor, bgColor, textColor, Icon: defaultIcon } = notificationColors[type] || {};
+    const { bgFirstColor, bgColor, textColor, Icon: defaultIcon } = notificationColors[type] || {};
     return (
-        <div className="w-full ">
+        <div className="w-full">
             <div className={`flex w-full items-center gap-3 overflow-hidden rounded-r-lg border ${bgColor}`}>
                 <div className="min-h-24 w-4 rounded-r-lg" style={{ backgroundColor: bgFirstColor }}></div>
                 <img src={Icon || defaultIcon} alt={type} />

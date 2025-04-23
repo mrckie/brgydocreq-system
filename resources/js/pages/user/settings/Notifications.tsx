@@ -1,5 +1,5 @@
-import UserSettingsLayout from '@/layouts/user/UserSettingsLayout';
 import CustomNotifications from '@/components/custom/CustomNotifications';
+import UserSettingsLayout from '@/layouts/user/UserSettingsLayout';
 
 const NotificationsData = [
     {
@@ -49,7 +49,7 @@ const NotificationsData = [
 const Notifications = () => {
     return (
         <UserSettingsLayout title="Notifications">
-            <div className="flex w-full flex-col gap-y-1 max-h-[530px] overflow-y-auto pr-2">
+            <div className="flex max-h-[530px] w-full flex-col gap-y-1 overflow-y-auto pr-2">
                 {NotificationsData.map((notification) => (
                     <CustomNotifications
                         type={notification.type}
