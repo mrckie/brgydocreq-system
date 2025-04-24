@@ -49,6 +49,7 @@ const NotificationsData = [
 const Notifications = () => {
     return (
         <UserSettingsLayout title="Notifications">
+
             <div className="flex max-h-[530px] w-full flex-col gap-y-1 overflow-y-auto pr-2">
                 {NotificationsData.map((notification) => (
                     <CustomNotifications
@@ -59,6 +60,7 @@ const Notifications = () => {
                     />
                 ))}
             </div>
+
         </UserSettingsLayout>
     );
 };

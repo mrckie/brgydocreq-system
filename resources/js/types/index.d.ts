@@ -1,4 +1,5 @@
 import { LucideIcon } from 'lucide-react';
+import { ChangeEvent } from 'react';
 import type { Config } from 'ziggy-js';
 
 export interface Auth {
@@ -25,10 +26,10 @@ export interface NavItem {
 
 export interface SharedData {
     auth: Auth;
-    admins: AdminFetch[];
+    admins: AdminForm[];
     residents: ResidentFetch[];
     roles: Role[];
-    documents: Document[];
+    documents: DocumentForm[];
     puroks: Purok[];
     status: Status[];
     ziggy: Config & { location: string };
@@ -51,14 +52,6 @@ export interface UserForm {
     resident_householdnum: string;
     resident_purok: string;
 }
-export interface Admin {
-    admin_id: string;
-    admin_username: string;
-    admin_email: string;
-    admin_photopath?: string;
-    admin_role: string;
-    [key: string]: unknown; // This allows for additional properties...
-}
 
 export interface Role {
     role_id: number;
@@ -75,20 +68,21 @@ export interface Status {
     status_name: string;
 }
 
-export interface Document {
+export interface DocumentForm {
     document_id: number;
     status_id: number | null;
     document_name: string;
     description: string;
     price: string;
-    document_photopath: string | null;
+    document_photopath: File | null;
 }
 
-export interface AdminFetch {
+export interface AdminForm {
     admin_id: number;
     admin_username: string;
     admin_email: string;
-    admin_photopath: string;
+    admin_photopath: File | null;
+    admin_roleid: number | null;
     admin_role: string;
     officer_firstname: string;
     officer_middlename: string;
@@ -100,6 +94,7 @@ export interface AdminFetch {
     officer_position: string;
     officer_gender: string;
     officer_purok: string;
+    officer_purokid: number | null;
 }
 
 export interface ResidentFetch {
@@ -146,25 +141,64 @@ export interface ResidentVerificationForm {
     phone_number: string;
 }
 
-export interface CustomFormField {
-    id?: string;
-    label?: string;
-    type?: string;
-    placeholder?: string;
-    value?: string | number | Date | null;
-    tabIndex?: number;
-    autoComplete?: string;
-    name?: string;
-    onChange?: (value: string | number | Date | null) => void;
-    errorMessage?: string;
-    autofocus?: boolean;
-    options?: { label: string; value: string }[];
-    additionalProps?: Record<string, any>;
-    selectItems?: { value: number; label: string }[];
-    disabled?: boolean;
-}
-
 export interface InviteForm {
     email: string;
     role_id: number | null;
 }
+
+// Base interface for common properties
+interface BaseFormField {
+    id?: string;
+    label?: string;
+    tabIndex?: number;
+    disabled?: boolean;
+    errorMessage?: string;
+    additionalProps?: Record<string, any>;
+}
+
+// Specific interfaces for each field type
+interface TextField extends BaseFormField {
+    type: 'text' | 'email' | 'password' | 'number';
+    placeholder?: string;
+    value?: string | number;
+    autoComplete?: string;
+    autofocus?: boolean;
+    onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
+}
+
+interface TextareaField extends BaseFormField {
+    type: 'textarea';
+    placeholder?: string;
+    value?: string;
+    onChange?: (e: ChangeEvent<HTMLTextAreaElement>) => void;
+}
+
+interface FileField extends BaseFormField {
+    type: 'file';
+    accept?: string;
+    value?: File | null;
+    onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
+}
+
+interface SelectField extends BaseFormField {
+    type: 'select';
+    placeholder?: string;
+    value?: number | null;
+    selectItems?: { value: number; label: string }[];
+    onChange?: (value: number) => void;
+}
+
+interface DateField extends BaseFormField {
+    type: 'date';
+    value?: string | Date | null;
+    onChange?: (date: Date | null) => void;
+}
+
+interface LinkField extends BaseFormField {
+    type: 'link';
+    value?: string;
+    onChange?: never; // No onChange for links
+}
+
+// Discriminated union
+export type CustomFormField = TextField | TextareaField | FileField | SelectField | DateField | LinkField;

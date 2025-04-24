@@ -14,10 +14,9 @@ interface CustomCardProps {
     decreasePercentage?: string;
     icon?: React.ReactNode;
     className?: string;
-    Imagesize?: string;
 }
 
-export const DocumentCustomCard = ({ image, title, content, alt, onClick, description, className, Imagesize }: CustomCardProps) => {
+export const DocumentCustomCard = ({ image, title, content, alt, onClick, description, className,  }: CustomCardProps) => {
     return (
         <>
             <button
@@ -26,7 +25,7 @@ export const DocumentCustomCard = ({ image, title, content, alt, onClick, descri
                 type='button'
                 aria-label={title}
             >
-                <CustomIcon imgSrc={image} alt={alt} sizes={Imagesize} className="h-full w-full rounded-md border border-gray-300 object-cover" />
+                <CustomIcon imgSrc={image} alt={alt} className="h-full w-full rounded-md border border-gray-300 object-cover" />
                 <Card className="absolute bottom-0 gap-2 rounded-b-md border border-gray-300 py-3 w-full">
                     <CardHeader className="px-4">
                         <CardTitle className="text-s3 text-center text-xl font-semibold">{title}</CardTitle>
@@ -69,7 +68,7 @@ export const CustomDisplayCard = ({ title, description, statistics, increasePerc
 }
 
 
-export const AdminCustomCard = ({ image, title, content, alt, onClick, description, Imagesize }: CustomCardProps) => {
+export const AdminCustomCard = ({ image, title, content, alt, onClick, description }: CustomCardProps) => {
     return (
         <>
             <button

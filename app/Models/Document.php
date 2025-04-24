@@ -16,6 +16,6 @@ class Document extends Model
         'document_name',
         'description',
         'price',
-        'document_phootopath',
+        'document_photopath',
     ];
 }

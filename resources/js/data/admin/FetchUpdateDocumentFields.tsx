@@ -1,9 +1,7 @@
-import { createStringSetter } from "@/lib/utils";
-import { CustomFormField, Document, SharedData } from "@/types";
+import { CustomFormField, DocumentForm, SharedData } from "@/types";
 import { usePage } from "@inertiajs/react";
 
-export const fetchUpdateFirstHalve = (data: Document, setData: (key: keyof Document, value: string | Date | number | null) => void, errors: Partial<Record<keyof Document, string>>): CustomFormField[] => {
-	const stringSetter = createStringSetter(setData);
+export const fetchUpdateFirstHalve = (data: DocumentForm, setData: (key: keyof DocumentForm, value: string | File | number) => void, errors: Partial<Record<keyof DocumentForm, string>>): CustomFormField[] => {
 	const { status } = usePage<SharedData>().props
 
 	return [
@@ -14,7 +12,7 @@ export const fetchUpdateFirstHalve = (data: Document, setData: (key: keyof Docum
 			disabled: data.document_name === null,
 			value: data.document_name ?? 'N/A',
 			tabIndex: -1,
-			onChange: stringSetter('document_name'),
+			onChange: (e) => setData('document_name', e.target.value),
 			errorMessage: errors.document_name,
 		},
 		{
@@ -24,17 +22,21 @@ export const fetchUpdateFirstHalve = (data: Document, setData: (key: keyof Docum
 			disabled: data.price === null,
 			value: data.price ?? 'N/A',
 			tabIndex: -3,
-			onChange: stringSetter('price'),
+			onChange: (e) => setData('price', e.target.value),
 			errorMessage: errors.price,
 		},
 		{
 			label: 'Document Photo',
-			type: 'text',
+			type: 'file',
 			id: 'document_photo',
-			disabled: data.document_photopath === null,
-			value: data.document_photopath ?? 'N/A',
 			tabIndex: -4,
-			onChange: stringSetter('document_photopath'),
+			onChange: (e) => {
+				const file = e.target.files?.[0];
+				if (file) {
+					setData('document_photopath', file);
+				}
+			},
+			accept: "image/jpeg,image/png,image/jpg",
 			errorMessage: errors.document_photopath,
 		},
 		{
@@ -42,21 +44,20 @@ export const fetchUpdateFirstHalve = (data: Document, setData: (key: keyof Docum
 			type: 'select',
 			id: 'status',
 			disabled: data.status_id === null,
-			value: data.status_id ?? 'N/A',
+			value: data.status_id ?? 0,
 			tabIndex: -6,
-			onChange: stringSetter('status_id'),
+			onChange: (value: number) => setData('status_id', value),
 			errorMessage: errors.status_id,
 			selectItems: status.map((status) => ({
 				label: status.status_name,
-				value: status.status_id
-			}))
+				value: status.status_id,
+			})),
 		},
 	]
 }
 
 
-export const fetchUpdateSecondHalve = (data: Document, setData: (key: keyof Document, value: string | Date | number | null) => void, errors: Partial<Record<keyof Document, string>>): CustomFormField[] => {
-	const stringSetter = createStringSetter(setData);
+export const fetchUpdateSecondHalve = (data: DocumentForm, setData: (key: keyof DocumentForm, value: string) => void, errors: Partial<Record<keyof DocumentForm, string>>): CustomFormField[] => {
 
 	return [
 		{
@@ -66,7 +67,7 @@ export const fetchUpdateSecondHalve = (data: Document, setData: (key: keyof Docu
 			disabled: data.description === null,
 			value: data.description ?? 'N/A',
 			tabIndex: -2,
-			onChange: stringSetter('description'),
+			onChange: (e) => setData('description', e.target.value),
 			errorMessage: errors.description,
 			additionalProps: {
 				className: 'h-24',

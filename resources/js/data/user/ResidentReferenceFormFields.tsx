@@ -1,9 +1,7 @@
-import { createDateSetter, createStringSetter } from "@/lib/utils"
 import { CustomFormField, ResidentVerificationForm } from "@/types"
+import { format } from "date-fns";
 
 export const ResidentReferenceFormFields = (data: ResidentVerificationForm, setData: (key: keyof ResidentVerificationForm, value: string | Date | null) => void, errors: Partial<Record<keyof ResidentVerificationForm, string>>): CustomFormField[] => {
-	const stringSetter = createStringSetter<ResidentVerificationForm>(setData);
-	const dateSetter = createDateSetter<ResidentVerificationForm>(setData);
 
 	return [
 		{
@@ -15,7 +13,7 @@ export const ResidentReferenceFormFields = (data: ResidentVerificationForm, setD
 			tabIndex: 1,
 			autofocus: true,
 			autoComplete: 'given-name',
-			onChange: stringSetter('resident_firstname'),
+			onChange: (e) => setData('resident_firstname', e.target.value),
 			errorMessage: errors.resident_firstname,
 		},
 		{
@@ -26,7 +24,7 @@ export const ResidentReferenceFormFields = (data: ResidentVerificationForm, setD
 			value: data.resident_middlename,
 			tabIndex: 2,
 			autoComplete: 'additional-name',
-			onChange: stringSetter('resident_middlename'),
+			onChange: (e) => setData('resident_middlename', e.target.value),
 			errorMessage: errors.resident_middlename,
 		},
 		{
@@ -37,7 +35,7 @@ export const ResidentReferenceFormFields = (data: ResidentVerificationForm, setD
 			value: data.resident_lastname,
 			tabIndex: 3,
 			autoComplete: 'family-name',
-			onChange: stringSetter('resident_lastname'),
+			onChange: (e) => setData('resident_lastname', e.target.value),
 			errorMessage: errors.resident_lastname,
 		},
 		{
@@ -48,18 +46,18 @@ export const ResidentReferenceFormFields = (data: ResidentVerificationForm, setD
 			value: data.resident_suffix,
 			tabIndex: 4,
 			autoComplete: 'additional-name',
-			onChange: stringSetter('resident_suffix'),
+			onChange: (e) => setData('resident_suffix', e.target.value),
 			errorMessage: errors.resident_suffix,
 		},
 		{
 			label: 'Birthdate',
 			type: 'date',
 			id: 'birthdate',
-			placeholder: 'Pick your birthdate',
 			tabIndex: 5,
-			autoComplete: 'bday',
 			value: data.resident_birthdate ? new Date(data.resident_birthdate) : null,
-			onChange: dateSetter('resident_birthdate'),
+			onChange: (date: Date | null) => {
+				setData('resident_birthdate', date ? format(date, 'yyyy-MM-dd') : '');
+			},
 			errorMessage: errors.resident_birthdate,
 		},
 		{
@@ -70,7 +68,7 @@ export const ResidentReferenceFormFields = (data: ResidentVerificationForm, setD
 			value: data.resident_householdnum,
 			tabIndex: 6,
 			autoComplete: 'address-line1',
-			onChange: stringSetter('resident_householdnum'),
+			onChange: (e) => setData('resident_householdnum', e.target.value),
 			errorMessage: errors.resident_householdnum,
 		},
 
@@ -82,7 +80,7 @@ export const ResidentReferenceFormFields = (data: ResidentVerificationForm, setD
 			value: data.email,
 			tabIndex: 7,
 			autoComplete: 'email',
-			onChange: stringSetter('email'),
+			onChange: (e) => setData('email', e.target.value),
 			errorMessage: errors.email,
 		},
 		{
@@ -93,7 +91,7 @@ export const ResidentReferenceFormFields = (data: ResidentVerificationForm, setD
 			value: data.phone_number,
 			tabIndex: 8,
 			autoComplete: 'tel',
-			onChange: stringSetter('phone_number'),
+			onChange: (e) => setData('phone_number', e.target.value),
 			errorMessage: errors.phone_number,
 		},
 

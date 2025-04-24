@@ -1,10 +1,10 @@
 import { createDateSetter, createStringSetter } from "@/lib/utils";
-import { CustomFormField, AdminFetch, SharedData } from "@/types";
+import { CustomFormField, AdminForm, SharedData } from "@/types";
 import { usePage } from "@inertiajs/react";
+import { format } from "date-fns";
 
-export const AccountInfo = (data: AdminFetch, setData: (key: keyof AdminFetch, value: string | Date | number | null) => void, errors: Partial<Record<keyof AdminFetch, string>>): CustomFormField[] => {
-	const stringSetter = createStringSetter(setData);
-	const {roles} = usePage<SharedData>().props
+export const AccountInfo = (data: AdminForm, setData: (key: keyof AdminForm, value: string | number | null) => void, errors: Partial<Record<keyof AdminForm, string>>): CustomFormField[] => {
+	const { roles } = usePage<SharedData>().props
 
 	return [
 		{
@@ -14,18 +14,18 @@ export const AccountInfo = (data: AdminFetch, setData: (key: keyof AdminFetch, v
 			disabled: data.admin_username === null,
 			value: data.admin_username ?? 'N/A',
 			tabIndex: -1,
-			onChange: stringSetter('admin_username'),
+			onChange: (e) => setData('admin_username', e.target.value),
 			errorMessage: errors.admin_username,
 		},
 		{
 			label: 'Role',
 			type: 'select',
 			id: 'role',
-			disabled: data.admin_role === null,
-			value: data.admin_role ?? 'N/A',
+			disabled: data.admin_roleid === null,
+			value: data.admin_roleid ?? 0,
 			tabIndex: -2,
-			onChange: stringSetter('admin_role'),
-			errorMessage: errors.admin_role,
+			onChange: (value: number) => setData('admin_roleid', value),
+			errorMessage: errors.admin_roleid,
 			selectItems: roles.map((role) => ({
 				label: role.role_name,
 				value: role.role_id
@@ -39,16 +39,14 @@ export const AccountInfo = (data: AdminFetch, setData: (key: keyof AdminFetch, v
 			disabled: data.admin_email === null,
 			value: data.admin_email ?? 'N/A',
 			tabIndex: -3,
-			onChange: stringSetter('admin_email'),
+			onChange: (e) => setData('admin_email', e.target.value),
 			errorMessage: errors.admin_email,
 		},
 	]
 }
 
-export const BarangayOfficerInfo = (data: AdminFetch, setData: (key: keyof AdminFetch, value: string | Date | number | null) => void, errors: Partial<Record<keyof AdminFetch, string>>): CustomFormField[] => {
-	const stringSetter = createStringSetter(setData);
-	const dateSetter = createDateSetter(setData);
-
+export const BarangayOfficerInfo = (data: AdminForm, setData: (key: keyof AdminForm, value: string | Date | number | null) => void, errors: Partial<Record<keyof AdminForm, string>>): CustomFormField[] => {
+	const { puroks } = usePage<SharedData>().props
 	return [
 		{
 			label: 'First Name',
@@ -57,7 +55,7 @@ export const BarangayOfficerInfo = (data: AdminFetch, setData: (key: keyof Admin
 			disabled: data.officer_firstname === null,
 			value: data.officer_firstname ?? 'N/A',
 			tabIndex: -4,
-			onChange: stringSetter('officer_firstname'),
+			onChange: (e) => setData('officer_firstname', e.target.value),
 			errorMessage: errors.officer_firstname,
 		},
 		{
@@ -67,7 +65,7 @@ export const BarangayOfficerInfo = (data: AdminFetch, setData: (key: keyof Admin
 			disabled: data.officer_middlename === null,
 			value: data.officer_middlename ?? 'N/A',
 			tabIndex: -5,
-			onChange: stringSetter('officer_middlename'),
+			onChange: (e) => setData('officer_middlename', e.target.value),
 			errorMessage: errors.officer_middlename,
 		},
 
@@ -78,7 +76,7 @@ export const BarangayOfficerInfo = (data: AdminFetch, setData: (key: keyof Admin
 			disabled: data.officer_lastname === null,
 			value: data.officer_lastname ?? 'N/A',
 			tabIndex: -6,
-			onChange: stringSetter('officer_lastname'),
+			onChange: (e) => setData('officer_lastname', e.target.value),
 			errorMessage: errors.officer_lastname,
 		},
 		{
@@ -88,7 +86,7 @@ export const BarangayOfficerInfo = (data: AdminFetch, setData: (key: keyof Admin
 			disabled: data.officer_suffix === null,
 			value: data.officer_suffix ?? 'N/A',
 			tabIndex: -7,
-			onChange: stringSetter('officer_suffix'),
+			onChange: (e) => setData('officer_suffix', e.target.value),
 			errorMessage: errors.officer_suffix,
 		},
 		{
@@ -98,7 +96,7 @@ export const BarangayOfficerInfo = (data: AdminFetch, setData: (key: keyof Admin
 			disabled: data.officer_gender === null,
 			value: data.officer_gender ?? 'N/A',
 			tabIndex: -8,
-			onChange: stringSetter('officer_gender'),
+			onChange: (e) => setData('officer_gender', e.target.value),
 			errorMessage: errors.officer_gender,
 		},
 		{
@@ -108,7 +106,9 @@ export const BarangayOfficerInfo = (data: AdminFetch, setData: (key: keyof Admin
 			disabled: data.officer_birthdate === null,
 			tabIndex: -10,
 			value: data.officer_birthdate ? new Date(data.officer_birthdate) : 'N/A',
-			onChange: dateSetter('officer_birthdate'),
+			onChange: (date: Date | null) => {
+				setData('officer_birthdate', date ? format(date, 'yyyy-MM-dd') : '');
+			},
 			errorMessage: errors.officer_birthdate,
 		},
 		{
@@ -118,7 +118,7 @@ export const BarangayOfficerInfo = (data: AdminFetch, setData: (key: keyof Admin
 			disabled: data.officer_precinct === null,
 			value: data.officer_precinct ?? 'N/A',
 			tabIndex: -11,
-			onChange: stringSetter('officer_precinct'),
+			onChange: (e) => setData('officer_precinct', e.target.value),
 			errorMessage: errors.officer_precinct,
 		},
 		{
@@ -128,18 +128,22 @@ export const BarangayOfficerInfo = (data: AdminFetch, setData: (key: keyof Admin
 			disabled: data.officer_position === null,
 			value: data.officer_position ?? 'N/A',
 			tabIndex: -12,
-			onChange: stringSetter('officer_position'),
+			onChange: (e) => setData('officer_position', e.target.value),
 			errorMessage: errors.officer_position,
 		},
 		{
 			label: 'Purok',
-			type: 'text',
+			type: 'select',
 			id: 'purok',
-			disabled: data.officer_purok === null,
-			value: data.officer_purok ?? 'N/A',
+			disabled: data.officer_purokid === null,
+			value: data.officer_purokid ?? 0,
 			tabIndex: -13,
-			onChange: stringSetter('officer_purok'),
-			errorMessage: errors.officer_purok,
+			onChange: (value: number) => setData('officer_purokid', value),
+			errorMessage: errors.officer_purokid,
+			selectItems: puroks.map((purok) => ({
+				label: purok.purok,
+				value: purok.address_id,
+			}))
 		},
 	]
 }

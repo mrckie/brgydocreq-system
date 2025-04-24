@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
+
 <body style="font-family: Arial, Helvetica, sans-serif; background-color: #f4f4f4; padding: 30px; letter-spacing:1px; word-spacing: 1px; line-height: 1.5">
 
     <div style="max-width: 600px; margin: auto; background-color: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); font-size: 14px;">
@@ -20,6 +21,7 @@
             <p style="font-size: 12px; color: #555;">All rights reserved.</p>
         </footer>
     </div>
+
 
 </body>
 

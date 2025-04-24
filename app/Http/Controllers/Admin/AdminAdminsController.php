@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Address;
 use App\Models\Admin;
 use App\Models\Role;
 use Illuminate\Http\Request;
@@ -19,14 +20,17 @@ class AdminAdminsController extends Controller
             })
             ->get();
 
-        $roles = Role::select('role_id', 'role_name')->where('role_name', '!=', 'super admin')->get();
+        // $roles = Role::select('role_id', 'role_name')->where('role_name', '!=', 'super admin')->get();
 
+        $roles = Role::get(['role_id', 'role_name']);
+        $puroks = Address::get(['address_id', 'purok']);
         $flattenAdmins = $admins->map(function ($admin) {
             return [
                 'admin_id' => $admin->admin_id,
                 'admin_username' => $admin->admin_username,
                 'admin_email' => $admin->admin_email,
                 'admin_photopath' => $admin->admin_photopath,
+                'admin_roleid' => $admin->role->role_id,
                 'admin_role' => $admin->role->role_name,
                 'officer_firstname' => $admin->barangayOfficer->officer_firstname,
                 'officer_middlename' => $admin->barangayOfficer->officer_middlename,
@@ -38,13 +42,18 @@ class AdminAdminsController extends Controller
                 'officer_position' => $admin->barangayOfficer->officer_position,
                 'officer_gender' => $admin->barangayOfficer->officer_gender,
                 'officer_purok' => $admin->barangayOfficer->address->purok,
+                'officer_purokid' => $admin->barangayOfficer->address->address_id,
             ];
         });
 
 
+        // dd($roles);
+
+
         return Inertia::render('admin/Admins', [
             'admins' => $flattenAdmins,
-            'roles' => $roles
+            'roles' => $roles,
+            'puroks' => $puroks
         ]);
     }
 

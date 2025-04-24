@@ -1,10 +1,8 @@
-import { createDateSetter, createStringSetter } from "@/lib/utils";
 import { CustomFormField, ResidentFetch, SharedData } from "@/types";
 import { usePage } from "@inertiajs/react";
+import { format } from "date-fns";
 
 export const FetchUpdateResidentsFields = (data: ResidentFetch, setData: (key: keyof ResidentFetch, value: string | Date | number | null) => void, errors: Partial<Record<keyof ResidentFetch, string>>): CustomFormField[] => {
-	const stringSetter = createStringSetter(setData);
-	const dateSetter = createDateSetter(setData);
 	const { puroks, status } = usePage<SharedData>().props
 
 	return [
@@ -15,7 +13,7 @@ export const FetchUpdateResidentsFields = (data: ResidentFetch, setData: (key: k
 			disabled: data.resident_firstname === null,
 			value: data.resident_firstname ?? 'N/A',
 			tabIndex: -1,
-			onChange: stringSetter('resident_firstname'),
+			onChange: (e) => setData('resident_firstname', e.target.value),
 			errorMessage: errors.resident_firstname,
 		},
 		{
@@ -25,7 +23,7 @@ export const FetchUpdateResidentsFields = (data: ResidentFetch, setData: (key: k
 			disabled: data.resident_middlename === null,
 			value: data.resident_middlename ?? 'N/A',
 			tabIndex: -2,
-			onChange: stringSetter('resident_middlename'),
+			onChange: (e) => setData('resident_middlename', e.target.value),
 			errorMessage: errors.resident_middlename,
 		},
 
@@ -36,7 +34,7 @@ export const FetchUpdateResidentsFields = (data: ResidentFetch, setData: (key: k
 			disabled: data.resident_lastname === null,
 			value: data.resident_lastname ?? 'N/A',
 			tabIndex: -3,
-			onChange: stringSetter('resident_lastname'),
+			onChange: (e) => setData('resident_lastname', e.target.value),
 			errorMessage: errors.resident_lastname,
 		},
 		{
@@ -46,7 +44,7 @@ export const FetchUpdateResidentsFields = (data: ResidentFetch, setData: (key: k
 			disabled: data.resident_suffix === null,
 			value: data.resident_suffix ?? 'N/A',
 			tabIndex: -4,
-			onChange: stringSetter('resident_suffix'),
+			onChange: (e) => setData('resident_suffix', e.target.value),
 			errorMessage: errors.resident_suffix,
 		},
 		{
@@ -56,7 +54,9 @@ export const FetchUpdateResidentsFields = (data: ResidentFetch, setData: (key: k
 			disabled: data.resident_birthdate === null,
 			tabIndex: -5,
 			value: data.resident_birthdate ?? 'N/A',
-			onChange: dateSetter('resident_birthdate'),
+			onChange: (date: Date | null) => {
+				setData('resident_birthdate', date ? format(date, 'yyyy-MM-dd') : '');
+			},
 			errorMessage: errors.resident_birthdate,
 		},
 		{
@@ -66,7 +66,7 @@ export const FetchUpdateResidentsFields = (data: ResidentFetch, setData: (key: k
 			disabled: data.resident_gender === null,
 			value: data.resident_gender ?? 'N/A',
 			tabIndex: -6,
-			onChange: stringSetter('resident_gender'),
+			onChange: (e) => setData('resident_gender', e.target.value),
 			errorMessage: errors.resident_gender,
 		},
 
@@ -77,7 +77,7 @@ export const FetchUpdateResidentsFields = (data: ResidentFetch, setData: (key: k
 			disabled: data.resident_precinct === null,
 			value: data.resident_precinct ?? 'N/A',
 			tabIndex: -7,
-			onChange: stringSetter('resident_precinct'),
+			onChange: (e) => setData('resident_precinct', e.target.value),
 			errorMessage: errors.resident_precinct,
 		},
 		{
@@ -85,13 +85,13 @@ export const FetchUpdateResidentsFields = (data: ResidentFetch, setData: (key: k
 			type: 'select',
 			id: 'purok',
 			disabled: data.resident_purokid === null,
-			value: data.resident_purokid ?? 'N/A',
-			tabIndex: -8,
-			onChange: stringSetter('resident_purokid'),
+			value: data.resident_purokid ?? 0,
+			tabIndex: -13,
+			onChange: (value: number) => setData('resident_purokid', value),
 			errorMessage: errors.resident_purokid,
 			selectItems: puroks.map((purok) => ({
 				label: purok.purok,
-				value: purok.address_id
+				value: purok.address_id,
 			}))
 		},
 		{
@@ -101,7 +101,7 @@ export const FetchUpdateResidentsFields = (data: ResidentFetch, setData: (key: k
 			disabled: data.resident_householdnum === null,
 			value: data.resident_householdnum ?? 'N/A',
 			tabIndex: -9,
-			onChange: stringSetter('resident_householdnum'),
+			onChange: (e) => setData('resident_householdnum', e.target.value),
 			errorMessage: errors.resident_householdnum,
 		},
 		{
@@ -109,14 +109,14 @@ export const FetchUpdateResidentsFields = (data: ResidentFetch, setData: (key: k
 			type: 'select',
 			id: 'status',
 			disabled: data.resident_statusid === null,
-			value: data.resident_statusid ?? 'N/A',
-			tabIndex: -10,
-			onChange: stringSetter('resident_statusid'),
+			value: data.resident_statusid ?? 0,
+			tabIndex: -6,
+			onChange: (value: number) => setData('resident_statusid', value),
 			errorMessage: errors.resident_statusid,
 			selectItems: status.map((status) => ({
 				label: status.status_name,
-				value: status.status_id
-			}))
+				value: status.status_id,
+			})),
 		},
 	]
 }
