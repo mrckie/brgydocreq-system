@@ -17,7 +17,7 @@
         <hr style="margin-top: 30px;">
         <footer>
             <p style="font-size: 12px; color: #555;">Barangay Balagunan, Sto. Tomas, Davao del Norte, 8112</p>
-            <p style="font-size: 12px; color: #555;">All rights reserved.</p>
+            <p style="font-size: 12px; color: #555;">All rights reserved.&#9400</p>
         </footer>
     </div>
 

@@ -1,4 +1,5 @@
 import CustomProfilePic from '@/components/custom/CustomProfilePic';
+
 import { CustomSidebar } from '@/components/custom/CustomSidebar';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
@@ -56,7 +57,7 @@ export default function UserSettingsLayout({ children, title }: UserSettingsLayo
                         <h2 className="text-lg">{title}</h2>
                     </div>
                     <div className="rounded-b-md border p-5 shadow-sm">
-                        <section className="max-w-xl space-y-12">{children}</section>
+                        <section className="max-w-full space-y-12">{children}</section>
                     </div>
                 </main>
             </SidebarInset>

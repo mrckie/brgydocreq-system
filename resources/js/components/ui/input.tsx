@@ -29,7 +29,7 @@ function Input({ className, type, ...props }: InputProps) {
           onClick={() => setShowPassword((prev) => !prev)}
           className="absolute right-3 flex items-center justify-center text-s3 cursor-pointer"
         >
-          {showPassword ? <EyeClosed className="h-5 w-5 " /> : <Eye className="h-5 w-5" />}
+          {showPassword ? <Eye className="h-5 w-5 " /> : <EyeClosed className="h-5 w-5" />}
         </button>
       )}
     </div>

@@ -14,28 +14,39 @@ interface CustomDialogProps {
     subTitleClassName?: string
     onSubmit?: React.FormEventHandler<HTMLFormElement>;
     fields?: CustomFormField
+    classname?: string
 }
 
-const CustomDialog = ({ title, subtitle, children, trigger, button, width = 'w-5xl', subTitleClassName, height = 'max-h-130', onSubmit, fields }: CustomDialogProps) => {
+const CustomDialog = ({
+    title,
+    subtitle,
+    children,
+    trigger,
+    button,
+    width = 'w-5xl',
+    subTitleClassName,
+    height = 'max-h-130',
+    onSubmit,
+    fields,
+    classname,
+}: CustomDialogProps) => {
     return (
         <Dialog>
             <DialogTrigger asChild>{trigger}</DialogTrigger>
             <DialogContent className={`${width}`}>
-                <DialogHeader className="flex-row items-center justify-start rounded-t-md bg-s3 p-2 -m-6.5">
-                    <DialogTitle className=" text-white pl-4">{title}</DialogTitle>
+                <DialogHeader className="bg-s3 -m-6.5 flex-row items-center justify-start rounded-t-md p-2">
+                    <DialogTitle className="pl-4 text-white">{title}</DialogTitle>
                 </DialogHeader>
-                <form onSubmit={onSubmit} className='flex flex-col gap-y-7'>
-                    <div className={`scroll-invisible overflow-y-auto flex flex-col gap-3 mt-4 ${height}`}>
+                <form onSubmit={onSubmit} className="flex flex-col gap-y-7">
+                    <div className={`scroll-invisible mt-4 flex flex-col gap-3 overflow-y-auto ${height} ${classname}`}>
                         <h1 className={subTitleClassName}>{subtitle}</h1>
                         {children}
                     </div>
-                    <DialogFooter>
-                        {button}
-                    </DialogFooter>
+                    <DialogFooter>{button}</DialogFooter>
                 </form>
-            <Toaster richColors position='bottom-left' />
+                <Toaster richColors position="bottom-left" />
             </DialogContent>
-        </Dialog >
+        </Dialog>
     );
 };
 
