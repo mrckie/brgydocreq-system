@@ -1,27 +1,37 @@
-import { type BreadcrumbItem, type SharedData } from '@/types';
-import { Transition } from '@headlessui/react';
+import { AdminForm, type SharedData } from '@/types';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
-
+import { AccountInfo, BarangayOfficerInfo } from '@/data/admin/FetchUpdateProfileFields';
 import DeleteUser from '@/components/custom/delete-user';
-import InputError from '@/components/custom/InputError';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import AdminSettingsLayout from '@/layouts/admin/AdminSettingsLayout';
+import CustomForm from '@/components/custom/CustomFormFields';
+import { NotebookPenIcon } from 'lucide-react';
 
-
-interface ProfileForm {
-    name: string;
-    email: string;
-}
 
 export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: boolean; status?: string }) {
     const { auth } = usePage<SharedData>().props;
+    console.log(auth);
 
-    const { data, setData, patch, errors, processing, recentlySuccessful } = useForm<Required<ProfileForm>>({
-        name: auth.admin.admin_username,
-        email: auth.admin.admin_email,
+    const { data, setData, patch, errors, processing, recentlySuccessful } = useForm<Required<AdminForm>>({
+        admin_id: auth.admin.admin_id,
+        admin_username: auth.admin.admin_username,
+        admin_email: auth.admin.admin_email,
+        admin_phonenum: auth.admin.admin_phonenum,
+        admin_photopath: auth.admin.admin_photopath,
+        admin_roleid: auth.admin.admin_roleid,
+        admin_role: auth.admin.admin_role,
+        officer_firstname: auth.admin.officer_firstname,
+        officer_middlename: auth.admin.officer_middlename,
+        officer_lastname: auth.admin.officer_lastname,
+        officer_suffix: auth.admin.officer_suffix,
+        officer_gender: auth.admin.officer_gender,
+        officer_birthdate: auth.admin.officer_birthdate,
+        officer_position: auth.admin.officer_position,
+        officer_precinct: auth.admin.officer_precinct,
+        officer_householdnum: auth.admin.officer_householdnum,
+        officer_purokid: auth.admin.officer_purokid,
+        officer_purok: auth.admin.officer_purok,
     });
 
     const submit: FormEventHandler = (e) => {
@@ -36,43 +46,23 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
         <>
             <Head title="Profile settings" />
             <AdminSettingsLayout title='Profile information'>
-                <div className="space-y-6">
+                <form onSubmit={submit} className="space-y-6">
+                    <CustomForm className='grid grid-cols-3 gap-x-5' fields={AccountInfo(data, setData, errors)} />
+                    <div className='flex justify-end'>
+                        <Button disabled={processing}>Save</Button>
+                    </div>
+                </form>
+                <div className='bg-amber-300 p-4 rounded-md'>
+                    <article className='flex text-justify '>
+                        <span>
+                            <NotebookPenIcon size={25} className='mr-2 mt-1' />
+                        </span>
+                        Your personal details below are based on official records provided by the Barangay and is managed by authorized personnel. For consistency and accuracy, this information cannot be edited by users.  If you need to make corrections or updates, please visit or contact the Barangay office directly. All updates will be reflected in the system once confirmed by the Barangay.
+                    </article>
+                </div>
+                <CustomForm className='grid grid-cols-3 gap-x-5' fields={BarangayOfficerInfo(data, setData, errors)} />
 
-                    <form onSubmit={submit} className="space-y-6">
-                        <div className="grid gap-2">
-                            <Label htmlFor="name">Name</Label>
-
-                            <Input
-                                id="name"
-                                className="mt-1 block w-full"
-                                value={data.name}
-                                onChange={(e) => setData('name', e.target.value)}
-                                required
-                                autoComplete="name"
-                                placeholder="Full name"
-                            />
-
-                            <InputError className="mt-2" message={errors.name} />
-                        </div>
-
-                        <div className="grid gap-2">
-                            <Label htmlFor="email">Email address</Label>
-
-                            <Input
-                                id="email"
-                                type="email"
-                                className="mt-1 block w-full"
-                                value={data.email}
-                                onChange={(e) => setData('email', e.target.value)}
-                                required
-                                autoComplete="username"
-                                placeholder="Email address"
-                            />
-
-                            <InputError className="mt-2" message={errors.email} />
-                        </div>
-
-                        {mustVerifyEmail && auth.user.email_verified_at === null && (
+                {/* {mustVerifyEmail && auth.user.email_verified_at === null && (
                             <div>
                                 <p className="text-muted-foreground -mt-4 text-sm">
                                     Your email address is unverified.{' '}
@@ -92,23 +82,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                     </div>
                                 )}
                             </div>
-                        )}
-
-                        <div className="flex items-center gap-4">
-                            <Button disabled={processing}>Save</Button>
-
-                            <Transition
-                                show={recentlySuccessful}
-                                enter="transition ease-in-out"
-                                enterFrom="opacity-0"
-                                leave="transition ease-in-out"
-                                leaveTo="opacity-0"
-                            >
-                                <p className="text-sm text-neutral-600">Saved</p>
-                            </Transition>
-                        </div>
-                    </form>
-                </div>
+                        )} */}
 
                 <DeleteUser />
             </AdminSettingsLayout>

@@ -29,7 +29,7 @@ class ReferenceNumberMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Reference Number nimo bitch',
+            subject: 'Reference Number',
         );
     }
 

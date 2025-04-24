@@ -1,6 +1,7 @@
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { CustomFormField } from '@/types';
 import React from 'react';
+import { Toaster } from 'sonner';
 
 interface CustomDialogProps {
     title: string;
@@ -32,6 +33,7 @@ const CustomDialog = ({ title, subtitle, children, trigger, button, width = 'w-5
                         {button}
                     </DialogFooter>
                 </form>
+            <Toaster richColors position='bottom-left' />
             </DialogContent>
         </Dialog >
     );

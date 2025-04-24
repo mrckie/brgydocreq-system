@@ -74,8 +74,19 @@ class HandleInertiaRequests extends Middleware
                     'admin_id' => $admin->admin_id,
                     'admin_username' => $admin->admin_username,
                     'admin_email' => $admin->admin_email,
+                    'admin_phonenum' => $admin->admin_phonenum,
                     'admin_role' => $admin->role->role_name,
-                    'admin_photopath' => $admin->admin_photopath
+                    'admin_roleid' => $admin->role->role_id,
+                    'admin_photopath' => $admin->admin_photopath,
+                    'officer_firstname' => $admin->barangayOfficer->officer_firstname,
+                    'officer_middlename' => $admin->barangayOfficer->officer_middlename,
+                    'officer_lastname' => $admin->barangayOfficer->officer_lastname,
+                    'officer_suffix' => $admin->barangayOfficer->officer_suffix,
+                    'officer_birthdate' => $admin->barangayOfficer->officer_birthdate,
+                    'officer_gender' => $admin->barangayOfficer->officer_gender,
+                    'officer_precinct' => $admin->barangayOfficer->officer_precinct,
+                    'officer_householdnum' => $admin->barangayOfficer->officer_householdnum,
+                    'officer_purok' => $admin->barangayOfficer->address->purok,
                 ] : null
             ],
             'ziggy' => fn(): array => [

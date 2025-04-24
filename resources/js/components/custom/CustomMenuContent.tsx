@@ -1,12 +1,12 @@
 import { UserInfo } from '@/components/custom/UserInfo';
 import { DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
 import { useMobileNavigation } from '@/hooks/use-mobile-navigation';
-import { UserForm, type Admin } from '@/types';
+import { UserForm, type AdminForm } from '@/types';
 import { Link } from '@inertiajs/react';
 import { LogOut, Settings } from 'lucide-react';
 
 interface CustomMenuContentProps {
-    admin?: Admin;
+    admin?: AdminForm;
     user?: UserForm;
 }
 

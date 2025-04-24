@@ -8,19 +8,33 @@ const CustomProfilePic = () => {
 	const getInitials = useInitials();
 
 	return (
-		<div className='py-7 flex flex-col justify-center items-center gap-y-2'>
-			<Avatar className="size-30 overflow-hidden rounded-full">
-				<AvatarImage src={auth.user.user_photopath} alt={auth.user.username} />
-				<AvatarFallback className="rounded-lg bg-neutral-200 text-black dark:bg-neutral-700 dark:text-white text-4xl">
-					{getInitials(auth.user.username)}
-				</AvatarFallback>
-			</Avatar>
-			<div className="flex flex-col justify-center items-center">
-				<span className="truncate font-medium">{auth.user.username}</span>
-				<span className="text-muted-foreground truncate text-sm">{auth.user.user_email}</span>
+		auth.user ? (
+			<div className='py-7 flex flex-col justify-center items-center gap-y-2'>
+				<Avatar className="size-30 overflow-hidden rounded-full">
+					<AvatarImage src={auth.user.user_photopath} alt={auth.user.username} />
+					<AvatarFallback className="rounded-lg bg-neutral-200 text-black dark:bg-neutral-700 dark:text-white text-4xl">
+						{getInitials(auth.user.username)}
+					</AvatarFallback>
+				</Avatar>
+				<div className="flex flex-col justify-center items-center">
+					<span className="truncate font-medium">{auth.user.username}</span>
+					<span className="text-muted-foreground truncate text-sm">{auth.user.user_email}</span>
+				</div>
 			</div>
-		</div>
-
+		) : auth.admin ? (
+			<div className='py-7 flex flex-col justify-center items-center gap-y-2'>
+				<Avatar className="size-30 overflow-hidden rounded-full">
+					<AvatarImage src={auth.admin.admin_photopath} alt={auth.admin.admin_photopath} />
+					<AvatarFallback className="rounded-lg bg-neutral-200 text-black dark:bg-neutral-700 dark:text-white text-4xl">
+						{getInitials(auth.admin.admin_username)}
+					</AvatarFallback>
+				</Avatar>
+				<div className="flex flex-col justify-center items-center">
+					<span className="truncate font-medium">{auth.admin.admin_username}</span>
+					<span className="text-muted-foreground truncate text-sm">{auth.admin.admin_role}</span>
+				</div>
+			</div>
+		) : null
 	)
 }
 

@@ -7,7 +7,7 @@ import AuthSplitLayout from '@/layouts/shared/AuthSplitLayout';
 import ResidentVerification from '../../../../assets/verification-side-image.svg';
 import { FormEventHandler } from 'react';
 import { ResidentVerificationForm } from '@/types';
-import { ResidentReferenceFormFields } from '@/data/ResidentReferenceFormFields';
+import { ResidentReferenceFields } from '@/data/user/ResidentReferenceFields';
 import CustomForm from '@/components/custom/CustomFormFields';
 import { toast, Toaster } from 'sonner';
 
@@ -52,7 +52,7 @@ const ResidentReference = () => {
             <form className="mt-4 flex flex-col gap-6" onSubmit={handleSubmit}>
                 <div className="grid gap-5">
 
-                    <CustomForm fields={ResidentReferenceFormFields(data, setData, errors)} className='grid grid-cols-2 gap-3' />
+                    <CustomForm fields={ResidentReferenceFields(data, setData, errors)} className='grid grid-cols-2 gap-3' />
 
                     <Button type="submit" variant="primary" className="mt-5 w-full" tabIndex={8} disabled={processing}>
                         {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}

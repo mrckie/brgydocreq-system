@@ -1,9 +1,9 @@
 import { Label } from '../ui/label';
 import { Textarea } from '../ui/textarea';
+import { Input } from '../ui/input';
 import InputError from './InputError';
 import CustomSelect from './CustomSelect';
 import { DatePicker } from '../ui/date-picker';
-import { Input } from '../ui/input';
 import TextLink from './CustomTextLink';
 import { CustomFormField } from '@/types';
 
@@ -13,7 +13,6 @@ interface CustomFormProps {
     className?: string;
 }
 
-
 const CustomForm = ({ fields, className, title }: CustomFormProps) => {
     const renderField = (field: CustomFormField) => {
         switch (field.type) {
@@ -22,10 +21,10 @@ const CustomForm = ({ fields, className, title }: CustomFormProps) => {
                     <Textarea
                         id={field.id}
                         placeholder={field.placeholder}
-                        value={field.value as string}
+                        value={field.value}
                         tabIndex={field.tabIndex}
                         disabled={field.disabled}
-                        onChange={(e) => field.onChange?.(e.target.value)}
+                        onChange={field.onChange}
                         {...field.additionalProps}
                     />
                 );
@@ -36,61 +35,86 @@ const CustomForm = ({ fields, className, title }: CustomFormProps) => {
                         tabIndex={field.tabIndex}
                         value={field.value ? new Date(field.value) : null}
                         disabled={field.disabled}
-                        className={`
-                            disabled:text-black disabled:border-shamrock-green`}
+                        className="disabled:text-black disabled:border-shamrock-green"
+                        onChange={field.onChange}
                         {...field.additionalProps}
-                        onChange={(date) => field.onChange?.(date)}
-                        {...field.additionalProps}
-
                     />
                 );
             case 'select':
                 return (
                     <CustomSelect
                         placeholder={field.placeholder}
-                        onChange={(value: number) => field.onChange?.(value)}
-                        items={field.selectItems || []}
+                        onChange={field.onChange ?? (() => { })}
+                        items={field.selectItems ?? []}
+                        value={field.value ?? null}
                         {...field.additionalProps}
-                        value={field.value as number}
                     />
                 );
             case 'link':
+                return <TextLink className="text-sm">{field.value}</TextLink>;
+            case 'file':
                 return (
-                    <TextLink className='text-sm'>
-                        {field.value as string}
-                    </TextLink >
+                    <Input
+                        id={field.id}
+                        type="file"
+                        tabIndex={field.tabIndex}
+                        disabled={field.disabled}
+                        onChange={field.onChange}
+                        accept={field.accept}
+                        {...field.additionalProps}
+                    />
                 );
-
             default:
+                if (field.id === 'price') {
+                    return (
+                        <div className="relative">
+                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm">₱</span>
+                            <Input
+                                type="text"
+                                id={field.id}
+                                placeholder="0.00"
+                                value={field.value}
+                                tabIndex={field.tabIndex}
+                                disabled={field.disabled}
+                                onChange={field.onChange}
+                                className="pl-7 disabled:text-black disabled:border-shamrock-green"
+                                {...field.additionalProps}
+                            />
+                        </div>
+                    );
+                }
+
                 return (
                     <Input
                         type={field.type}
                         placeholder={field.placeholder}
-                        value={field.value as string || ''}
+                        value={field.value}
                         autoFocus={field.autofocus}
                         disabled={field.disabled}
                         autoComplete={field.autoComplete}
                         tabIndex={field.tabIndex}
-                        onChange={(e) => field.onChange?.(e.target.value)}
-                        className={`
-                            disabled:text-black disabled:border-shamrock-green`}
+                        onChange={field.onChange}
+                        className="disabled:text-black disabled:border-shamrock-green"
                         {...field.additionalProps}
                     />
                 );
+
         }
     };
 
     return (
         <div className="flex flex-col">
-            <h1 className="pb-2 font-normal">{title}</h1>
+            {title && <h1 className="pb-2 font-normal">{title}</h1>}
             <div className={className}>
                 {fields.map((field, index) => (
                     <div key={index} className="pb-3">
-                        <Label htmlFor={field.id} className="text-xs">
-                            {field.label}
-                        </Label>
+                        {field.label && (
+                            <Label htmlFor={field.id} className="text-xs">
+                                {field.label}
+                            </Label>
+                        )}
                         {renderField(field)}
-                        <InputError message={field.errorMessage} />
+                        {field.errorMessage && <InputError message={field.errorMessage} />}
                     </div>
                 ))}
             </div>
@@ -99,4 +123,3 @@ const CustomForm = ({ fields, className, title }: CustomFormProps) => {
 };
 
 export default CustomForm;
-export type { CustomFormField };

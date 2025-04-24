@@ -4,7 +4,7 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrig
 interface CustomSelectProps {
 	placeholder?: string;
 	items: { value: number, label: string }[];
-	className?: string;
+	className?: string;	
 	onChange?: (value: number) => void;
 	value: number | null;
 }

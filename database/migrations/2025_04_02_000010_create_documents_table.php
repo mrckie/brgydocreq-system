@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreign('status_id')->references('status_id')->on('statuses')->onDelete('cascade');
             $table->string('document_name');
             $table->string('description');
-            $table->string('price');
+            $table->decimal('price', 7, 2);
             $table->string('document_photopath')->nullable();
             $table->timestamps();
         });

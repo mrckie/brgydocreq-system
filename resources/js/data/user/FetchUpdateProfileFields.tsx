@@ -1,8 +1,7 @@
-import { createDateSetter, createStringSetter } from "@/lib/utils";
 import { CustomFormField, UserForm, SharedData } from "@/types";
+import { format } from "date-fns";
 
-export const AccountInfo = (data: UserForm, setData: (key: keyof UserForm, value: string | Date | number | null) => void, errors: Partial<Record<keyof UserForm, string>>): CustomFormField[] => {
-	const stringSetter = createStringSetter(setData);
+export const AccountInfo = (data: UserForm, setData: (key: keyof UserForm, value: string | null) => void, errors: Partial<Record<keyof UserForm, string>>): CustomFormField[] => {
 
 	return [
 		{
@@ -11,7 +10,7 @@ export const AccountInfo = (data: UserForm, setData: (key: keyof UserForm, value
 			id: 'username',
 			value: data.username,
 			tabIndex: -1,
-			onChange: stringSetter('username'),
+			onChange: (e) => setData('username', e.target.value),
 			errorMessage: errors.username,
 		},
 		{
@@ -20,7 +19,7 @@ export const AccountInfo = (data: UserForm, setData: (key: keyof UserForm, value
 			id: 'email',
 			value: data.user_email,
 			tabIndex: -2,
-			onChange: stringSetter('user_email'),
+			onChange: (e) => setData('user_email', e.target.value),
 			errorMessage: errors.user_email,
 		},
 
@@ -30,16 +29,14 @@ export const AccountInfo = (data: UserForm, setData: (key: keyof UserForm, value
 			id: 'phone_num',
 			value: data.user_phonenum,
 			tabIndex: -3,
-			onChange: stringSetter('user_phonenum'),
+			onChange: (e) => setData('user_phonenum', e.target.value),
 			errorMessage: errors.user_phonenum,
 		},
 	]
 }
 
 
-export const ResidentInfo = (data: UserForm, setData: (key: keyof UserForm, value: string | Date | number | null) => void, errors: Partial<Record<keyof UserForm, string>>): CustomFormField[] => {
-	const stringSetter = createStringSetter(setData);
-	const dateSetter = createDateSetter(setData);
+export const ResidentInfo = (data: UserForm, setData: (key: keyof UserForm, value: string | Date | null) => void, errors: Partial<Record<keyof UserForm, string>>): CustomFormField[] => {
 
 	return [
 		{
@@ -49,7 +46,7 @@ export const ResidentInfo = (data: UserForm, setData: (key: keyof UserForm, valu
 			disabled: true,
 			value: data.resident_firstname,
 			tabIndex: -1,
-			onChange: stringSetter('resident_firstname'),
+			onChange: (e) => setData('resident_firstname', e.target.value),
 			errorMessage: errors.resident_firstname,
 		},
 		{
@@ -59,7 +56,7 @@ export const ResidentInfo = (data: UserForm, setData: (key: keyof UserForm, valu
 			disabled: true,
 			value: data.resident_middlename,
 			tabIndex: -2,
-			onChange: stringSetter('resident_middlename'),
+			onChange: (e) => setData('resident_middlename', e.target.value),
 			errorMessage: errors.resident_middlename,
 		},
 
@@ -70,7 +67,7 @@ export const ResidentInfo = (data: UserForm, setData: (key: keyof UserForm, valu
 			disabled: true,
 			value: data.resident_lastname,
 			tabIndex: -3,
-			onChange: stringSetter('resident_lastname'),
+			onChange: (e) => setData('resident_lastname', e.target.value),
 			errorMessage: errors.resident_lastname,
 		},
 		{
@@ -78,9 +75,9 @@ export const ResidentInfo = (data: UserForm, setData: (key: keyof UserForm, valu
 			type: 'text',
 			id: 'suffix',
 			disabled: true,
-			value: data.resident_suffix,
-			tabIndex: -4,
-			onChange: stringSetter('resident_suffix'),
+			value: data.resident_suffix ?? 'N/A',
+			tabIndex: -3,
+			onChange: (e) => setData('resident_suffix', e.target.value),
 			errorMessage: errors.resident_suffix,
 		},
 		{
@@ -90,7 +87,9 @@ export const ResidentInfo = (data: UserForm, setData: (key: keyof UserForm, valu
 			disabled: true,
 			tabIndex: -5,
 			value: data.resident_birthdate,
-			onChange: dateSetter('resident_birthdate'),
+			onChange: (date: Date | null) => {
+				setData('resident_birthdate', date ? format(date, 'yyyy-MM-dd') : '');
+			},
 			errorMessage: errors.resident_birthdate,
 		},
 		{
@@ -100,7 +99,7 @@ export const ResidentInfo = (data: UserForm, setData: (key: keyof UserForm, valu
 			disabled: true,
 			value: data.resident_gender,
 			tabIndex: -6,
-			onChange: stringSetter('resident_gender'),
+			onChange: (e) => setData('resident_gender', e.target.value),
 			errorMessage: errors.resident_gender,
 		},
 
@@ -111,7 +110,7 @@ export const ResidentInfo = (data: UserForm, setData: (key: keyof UserForm, valu
 			disabled: true,
 			value: data.resident_precinct,
 			tabIndex: -7,
-			onChange: stringSetter('resident_precinct'),
+			onChange: (e) => setData('resident_precinct', e.target.value),
 			errorMessage: errors.resident_precinct,
 		},
 		{
@@ -121,7 +120,7 @@ export const ResidentInfo = (data: UserForm, setData: (key: keyof UserForm, valu
 			disabled: true,
 			value: data.resident_purok,
 			tabIndex: -8,
-			onChange: stringSetter('resident_purok'),
+			onChange: (e) => setData('resident_purok', e.target.value),
 			errorMessage: errors.resident_purok,
 
 		},
@@ -132,7 +131,7 @@ export const ResidentInfo = (data: UserForm, setData: (key: keyof UserForm, valu
 			disabled: true,
 			value: data.resident_householdnum,
 			tabIndex: -9,
-			onChange: stringSetter('resident_householdnum'),
+			onChange: (e) => setData('resident_householdnum', e.target.value),
 			errorMessage: errors.resident_householdnum,
 		},
 	]

@@ -29,9 +29,6 @@ export function CustomUserHeader({ breadcrumbs = [], mainNavItems = [], rightNav
     const { url } = usePage()
 
     const isActive = url === '/about-us' || url === '/contact-us'
-    const isWelcomePage = route().current('landing.home');
-    const scrollableItems = ['about', 'services'];
-    console.log(auth)
 
     return (
         <>
@@ -90,19 +87,12 @@ export function CustomUserHeader({ breadcrumbs = [], mainNavItems = [], rightNav
                     <NavigationMenu className="flex h-full items-stretch">
                         <NavigationMenuList className="flex h-full items-stretch space-x-2">
                             {mainNavItems.map((item, index) => {
-                                const isScrollable = scrollableItems.includes(item.href.split('#')[0].toLowerCase());
-                                const sectionId = isScrollable ? item.href.split('#')[1] || item.href : null;
 
                                 return (
                                     <NavigationMenuItem key={index} className="relative flex h-full items-center">
                                         <Link
                                             prefetch
                                             href={item.href}
-                                            onClick={(event) => {
-                                                if (isScrollable && isWelcomePage && sectionId) {
-                                                    event.preventDefault();
-                                                }
-                                            }}
                                             className={cn(navigationMenuTriggerStyle(), 'h-9 cursor-pointer px-8')}
                                         >
                                             {item.icon && <CustomIcon icon={item.icon} className="mr-2 h-4 w-4" />}
@@ -132,7 +122,7 @@ export function CustomUserHeader({ breadcrumbs = [], mainNavItems = [], rightNav
                                             </Avatar>
                                             <div className="flex flex-col items-start gap-1 text-sm">
                                                 {auth.user.username}
-                                                <span className="text-xs">{`${auth.user.resident_lastname}, ${auth.user.resident_firstname}`}</span>
+                                                <span className="text-xs">{`${auth.user.resident_lastname}, ${getInitials(auth.user.resident_firstname)}`}</span>
                                             </div>
                                             <ChevronDown className="h-4 w-4" />
                                         </Button>

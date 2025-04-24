@@ -19,6 +19,18 @@ html {
     display: none;
 }
 
+/* Hide default show password icon in Edge */
+input[type="password"]::-ms-reveal {
+    display: none;
+}
+
+/* Hide autofill dropdown button in WebKit browsers */
+input[type="password"]::-webkit-credentials-auto-fill-button {
+    display: none;
+}
+
+
+
 @theme {
     --font-instrument:
         'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';

@@ -1,10 +1,9 @@
 import { createDateSetter, createStringSetter } from "@/lib/utils";
 import { AdminRegisterForm, CustomFormField } from "@/types";
+import { format } from "date-fns";
 
 
 export const PersonalDetails = (data: AdminRegisterForm, setData: (key: keyof AdminRegisterForm, value: string | Date | null) => void, errors: Partial<Record<keyof AdminRegisterForm, string>>): CustomFormField[] => {
-	const stringSetter = createStringSetter(setData);
-	const dateSetter = createDateSetter(setData);
 
 	return [
 		{
@@ -16,7 +15,7 @@ export const PersonalDetails = (data: AdminRegisterForm, setData: (key: keyof Ad
 			value: data.officer_firstname,
 			tabIndex: 1,
 			autoComplete: 'given-name',
-			onChange: stringSetter('officer_firstname'),
+			onChange: (e) => setData('officer_firstname', e.target.value),
 			errorMessage: errors.officer_firstname,
 		},
 		{
@@ -27,7 +26,7 @@ export const PersonalDetails = (data: AdminRegisterForm, setData: (key: keyof Ad
 			value: data.officer_middlename,
 			tabIndex: 2,
 			autoComplete: 'additional-name',
-			onChange: stringSetter('officer_middlename'),
+			onChange: (e) => setData('officer_middlename', e.target.value),
 			errorMessage: errors.officer_middlename,
 		},
 
@@ -39,7 +38,7 @@ export const PersonalDetails = (data: AdminRegisterForm, setData: (key: keyof Ad
 			value: data.officer_lastname,
 			tabIndex: 3,
 			autoComplete: 'family-name',
-			onChange: stringSetter('officer_lastname'),
+			onChange: (e) => setData('officer_lastname', e.target.value),
 			errorMessage: errors.officer_lastname,
 		},
 		{
@@ -50,18 +49,18 @@ export const PersonalDetails = (data: AdminRegisterForm, setData: (key: keyof Ad
 			value: data.officer_suffix,
 			tabIndex: 4,
 			autoComplete: 'additional-name',
-			onChange: stringSetter('officer_suffix'),
+			onChange: (e) => setData('officer_suffix', e.target.value),
 			errorMessage: errors.officer_suffix,
 		},
 		{
 			label: 'Birthdate',
 			type: 'date',
 			id: 'birthdate',
-			placeholder: 'Pick your birthdate',
 			tabIndex: 5,
-			autoComplete: 'bday',
 			value: data.officer_birthdate ? new Date(data.officer_birthdate) : null,
-			onChange: dateSetter('officer_birthdate'),
+			onChange: (date: Date | null) => {
+							setData('officer_birthdate', date ? format(date, 'yyyy-MM-dd') : '');
+						},
 			errorMessage: errors.officer_birthdate,
 		},
 		{
@@ -72,7 +71,7 @@ export const PersonalDetails = (data: AdminRegisterForm, setData: (key: keyof Ad
 			value: data.officer_householdnum,
 			tabIndex: 6,
 			autoComplete: 'address-line1',
-			onChange: stringSetter('officer_householdnum'),
+			onChange: (e) => setData('officer_householdnum', e.target.value),
 			errorMessage: errors.officer_householdnum,
 		},
 	]
@@ -80,7 +79,6 @@ export const PersonalDetails = (data: AdminRegisterForm, setData: (key: keyof Ad
 
 
 export const AccountDetails = (data: AdminRegisterForm, setData: (key: keyof AdminRegisterForm, value: string) => void, errors: Partial<Record<keyof AdminRegisterForm, string>>): CustomFormField[] => {
-	const stringSetter = createStringSetter(setData);
 
 	return [
 
@@ -93,7 +91,7 @@ export const AccountDetails = (data: AdminRegisterForm, setData: (key: keyof Adm
 			value: data.admin_email,
 			tabIndex: 7,
 			autoComplete: 'email',
-			onChange: stringSetter('admin_email'),
+			onChange: (e) => setData('admin_email', e.target.value),
 			errorMessage: errors.admin_email,
 		},
 		{
@@ -104,7 +102,7 @@ export const AccountDetails = (data: AdminRegisterForm, setData: (key: keyof Adm
 			value: data.admin_phonenum,
 			tabIndex: 8,
 			autoComplete: 'tel',
-			onChange: stringSetter('admin_phonenum'),
+			onChange: (e) => setData('admin_phonenum', e.target.value),
 			errorMessage: errors.admin_phonenum,
 		},
 		{
@@ -115,7 +113,7 @@ export const AccountDetails = (data: AdminRegisterForm, setData: (key: keyof Adm
 			value: data.admin_username,
 			tabIndex: 9,
 			autoComplete: 'username',
-			onChange: stringSetter('admin_username'),
+			onChange: (e) => setData('admin_username', e.target.value),
 			errorMessage: errors.admin_username,
 		},
 		{
@@ -126,7 +124,7 @@ export const AccountDetails = (data: AdminRegisterForm, setData: (key: keyof Adm
 			tabIndex: 10,
 			autoComplete: 'role',
 			disabled: true,
-			onChange: stringSetter('admin_role'),
+			onChange: (e) => setData('admin_role', e.target.value),
 			errorMessage: errors.admin_role,
 		},
 		{
@@ -134,10 +132,9 @@ export const AccountDetails = (data: AdminRegisterForm, setData: (key: keyof Adm
 			type: 'password',
 			id: 'password',
 			value: data.admin_password,
-			placeholder: '**********',
 			tabIndex: 11,
 			autoComplete: 'new-password',
-			onChange: stringSetter('admin_password'),
+			onChange: (e) => setData('admin_password', e.target.value),
 			errorMessage: errors.admin_password,
 		},
 		{
@@ -146,9 +143,8 @@ export const AccountDetails = (data: AdminRegisterForm, setData: (key: keyof Adm
 			id: 'confirm_password',
 			value: data.admin_password_confirmation,
 			tabIndex: 12,
-			placeholder: '**********',
 			autoComplete: 'new-password',
-			onChange: stringSetter('admin_password_confirmation'),
+			onChange: (e) => setData('admin_password_confirmation', e.target.value),
 			errorMessage: errors.admin_password_confirmation,
 		},
 	]

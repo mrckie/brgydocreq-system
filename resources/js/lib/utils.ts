@@ -13,7 +13,7 @@ export function formatText(text: string): string {
 }
 
 export const createStringSetter = <T extends Record<string, any>>(setData: (key: keyof T, value: string | number) => void) => {
-    return (key: keyof T) => (value: string | Date | number | null) => {
+    return (key: keyof T) => (value: string | Date | number | null | File) => {
         if (typeof value === 'string' || typeof value === 'number') {
             setData(key, value);
             console.log(value);
@@ -22,11 +22,21 @@ export const createStringSetter = <T extends Record<string, any>>(setData: (key:
 };
 
 export const createDateSetter = <T extends Record<string, any>>(setData: (key: keyof T, value: string) => void) => {
-    return (key: keyof T) => (value: string | Date | number | null) => {
+    return (key: keyof T) => (value: string | Date | number | null | File) => {
         if (value instanceof Date) {
             const formattedDate = format(value, 'yyyy-MM-dd');
             setData(key, formattedDate);
         }
+    };
+};
+
+export const createFileSetter = <T extends Record<string, any>>(
+    setData: (key: keyof T, value: string | Date | number | null | File) => void
+) => {
+    return (key: keyof T) => (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0] || null;
+        setData(key, file);
+        console.log(file ? file.name : 'No file selected');
     };
 };
 
